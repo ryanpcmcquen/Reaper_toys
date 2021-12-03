@@ -11,6 +11,10 @@
 //
 // v0.1.0 - 2021_12_02
 // Initial release.
+//
+// v0.2.0 - 2021_12_03
+// Re-normalize originally active take
+// after loop.
 
 /*
 Normalize items
@@ -32,6 +36,16 @@ Select all items in track
 40421
 */
 
+function normalizeTakeToCommonGain()
+(
+    Main_OnCommand(40421, 0);
+    Main_OnCommand(40254, 0);
+
+    vol = GetMediaItemTakeInfo_Value(take, "D_VOL");
+    // Set takes to -6db.
+    SetMediaItemTakeInfo_Value(take, "D_VOL", vol / 2);
+);
+
 itemCounter = 0;
 while (itemCounter < CountMediaItems(0)) (
     item = GetMediaItem(0, itemCounter);
@@ -45,17 +59,16 @@ while (itemCounter < CountMediaItems(0)) (
         SetOnlyTrackSelected(GetMediaItemTrack(item));
         SetActiveTake(take);
 
-        Main_OnCommand(40421, 0);
-        Main_OnCommand(40254, 0);
+        normalizeTakeToCommonGain();
 
-        vol = GetMediaItemTakeInfo_Value(take, "D_VOL");
-        // Set takes to -6db.
-        SetMediaItemTakeInfo_Value(take, "D_VOL", vol / 2);
         takeCounter = takeCounter + 1;
     );
 
     // Restore the active take:
     SetActiveTake(oldActiveTake);
+    // Re-normalize the original active take,
+    // since it is the preferred one.
+    normalizeTakeToCommonGain();
     // Deselect everything:
     SelectAllMediaItems(0, 0);
 
