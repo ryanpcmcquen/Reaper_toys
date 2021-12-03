@@ -1,0 +1,66 @@
+// Normalize all items/takes to -6db.
+// By Ryan McQuen
+//
+// I find it useful for mixing to have a baseline
+// and then adjusting the faders to taste to
+// establish a balanced mix. I use -6db
+// since it's usually a good target
+// for rendering out if you're
+// going to master the tracks
+// or whatnot.
+//
+// v0.1.0 - 2021_12_02
+// Initial release.
+
+/*
+Normalize items
+40108
+
+Normalize items (reset to unity if already normalized)
+40936
+
+Normalize multiple items to common gain
+40254
+
+Normalize multiple items to common gain (reset to unity if already normalized)
+40937
+
+Reset item take gain to +0dB (un-normalize)
+40938
+
+Select all items in track
+40421
+*/
+
+itemCounter = 0;
+while (itemCounter < CountMediaItems(0)) (
+    item = GetMediaItem(0, itemCounter);
+    oldActiveTake = GetActiveTake(item);
+
+    takeCounter = 0;
+    while (takeCounter < CountTakes(item)) (
+        take = GetTake(item, takeCounter);
+
+        SelectAllMediaItems(0, 0);
+        SetOnlyTrackSelected(GetMediaItemTrack(item));
+        SetActiveTake(take);
+
+        Main_OnCommand(40421, 0);
+        Main_OnCommand(40254, 0);
+
+        vol = GetMediaItemTakeInfo_Value(take, "D_VOL");
+        // Set takes to -6db.
+        SetMediaItemTakeInfo_Value(take, "D_VOL", vol / 2);
+        takeCounter = takeCounter + 1;
+    );
+
+    // Restore the active take:
+    SetActiveTake(oldActiveTake);
+    // Deselect everything:
+    SelectAllMediaItems(0, 0);
+
+
+    itemCounter = itemCounter + 1;
+);
+
+UpdateArrange();
