@@ -1,0 +1,51 @@
+// Un-normalize all items/takes.
+// By Ryan McQuen
+//
+// Sometimes you just want everything
+// back to non-normal.
+//
+// v0.1.0 - 2021_12_02
+// Initial release.
+
+/*
+Normalize items
+40108
+
+Normalize items (reset to unity if already normalized)
+40936
+
+Normalize multiple items to common gain
+40254
+
+Normalize multiple items to common gain (reset to unity if already normalized)
+40937
+
+Reset item take gain to +0dB (un-normalize)
+40938
+*/
+
+SelectAllMediaItems(0, 1);
+
+itemCounter = 0;
+while (itemCounter < CountMediaItems(0)) (
+    item = GetMediaItem(0, itemCounter);
+    oldActiveTake = GetActiveTake(item);
+
+    takeCounter = 0;
+    while (takeCounter < CountTakes(item)) (
+        take = GetTake(item, takeCounter);
+
+        SetActiveTake(take);
+
+        Main_OnCommand(40938, 0);
+
+        takeCounter = takeCounter + 1;
+    );
+
+    // Restore the active take:
+    SetActiveTake(oldActiveTake);
+
+    itemCounter = itemCounter + 1;
+);
+
+UpdateArrange();
