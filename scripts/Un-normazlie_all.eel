@@ -34,7 +34,6 @@ while (itemCounter < CountMediaItems(0)) (
     takeCounter = 0;
     while (takeCounter < CountTakes(item)) (
         take = GetTake(item, takeCounter);
-
         SetActiveTake(take);
 
         Main_OnCommand(40938, 0);
