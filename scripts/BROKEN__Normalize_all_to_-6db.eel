@@ -1,0 +1,105 @@
+// Normalize all items/takes to -6db.
+// By Ryan McQuen
+//
+// I find it useful for mixing to have a baseline
+// and then adjusting the faders to taste to
+// establish a balanced mix. I use -6db
+// since it is usually a good target
+// for rendering out if you are
+// going to master the tracks
+// or whatnot.
+//
+// v0.1.0 - 2021_12_02
+// Initial release.
+//
+// v0.2.0 - 2021_12_03
+// Re-normalize originally active take
+// after loop.
+//
+// v0.3.0 - 2021_12_07
+// DOES NOT WORK, THIS IS GARBAGE.
+//
+
+/*
+Normalize items
+40108
+
+Normalize items (reset to unity if already normalized)
+40936
+
+Normalize multiple items to common gain
+40254
+
+Normalize multiple items to common gain (reset to unity if already normalized)
+40937
+
+Reset item take gain to +0dB (un-normalize)
+40938
+
+Select all items in track
+40421
+
+Unselect (clear selection of) all tracks/items/envelope points
+40769
+*/
+
+alreadyProcessedFiles = #alreadyProcessedFilesString;
+
+countOfMediaItems = CountMediaItems(0);
+mediaItemCounter = 0;
+while (mediaItemCounter < countOfMediaItems) (
+    mediaItem = GetMediaItem(0, mediaItemCounter);
+    oldActiveTake = GetActiveTake(mediaItem);
+
+    // Unselect everything:
+    Main_OnCommand(40769, 0);
+    SetOnlyTrackSelected(GetMediaItemTrack(mediaItem));
+
+    countOfTakes = CountTakes(mediaItem);
+    takeCounter = 0;
+    while (takeCounter < countOfTakes) (
+        take = GetTake(mediaItem, takeCounter);
+        SetActiveTake(take);
+
+        takeName = #takeNameString;
+        GetTakeName(takeName, take);
+
+        match(takeName, alreadyProcessedFiles) == 0
+            // Select all items in track:
+            ? Main_OnCommand(40421, 0)
+            // Unselect everything:
+            : Main_OnCommand(40769, 0);
+
+        Main_OnCommand(40254, 0);
+
+        strcat(alreadyProcessedFiles, takeName);
+
+        takeCounter = takeCounter + 1;
+    );
+
+    //Main_OnCommand(40769, 0);
+    //SetOnlyTrackSelected(GetMediaItemTrack(mediaItem));
+    SetActiveTake(oldActiveTake);
+
+    takeCounter = 0;
+    while (takeCounter < countOfTakes) (
+        take = GetTake(mediaItem, takeCounter);
+
+        vol = GetMediaItemTakeInfo_Value(take, "D_VOL");
+        // Set takes to -6db.
+        SetMediaItemTakeInfo_Value(take, "D_VOL", vol / 2);
+
+        takeCounter = takeCounter + 1;
+    );
+
+
+    //Main_OnCommand(40421, 0);
+    //Main_OnCommand(40937, 0);
+    //vol = GetMediaItemTakeInfo_Value(oldActiveTake, "D_VOL");
+    // Set takes to -6db.
+    //SetMediaItemTakeInfo_Value(oldActiveTake, "D_VOL", vol / 2);
+
+    mediaItemCounter = mediaItemCounter + 1;
+);
+
+UpdateArrange();
