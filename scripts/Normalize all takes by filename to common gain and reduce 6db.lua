@@ -17,7 +17,7 @@
 // Re-normalize originally active take
 // after loop.
 //
-// v0.3.0 - 2021_12_04
+// v0.3.0 - 2021_12_07
 // Rewrite all behavior to target individual files
 // inside of a track and normalize those
 // against each other. Also, it is now
