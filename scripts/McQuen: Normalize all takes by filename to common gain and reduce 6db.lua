@@ -1,5 +1,5 @@
 --[[
-// Normalize all takes by filename to common gain and reduce 6db
+// McQuen: Normalize all takes by filename to common gain and reduce 6db
 // By Ryan McQuen (but really by @EricTBoneJackson)
 //
 // I find it useful for mixing to have a baseline
@@ -22,6 +22,9 @@
 // inside of a track and normalize those
 // against each other. Also, it is now
 // in Lua.
+//
+// v0.3.1 - 2012_12_08
+// Add name prefix.
 ]]--
 
 local selectedMediaItems = {}
