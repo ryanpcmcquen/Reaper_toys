@@ -1,4 +1,4 @@
-// Un-normalize all takes
+// McQuen -- Un-normalize all takes
 // By Ryan McQuen
 //
 // Sometimes you just want everything
@@ -9,6 +9,9 @@
 //
 // v0.2.0 - 2021_12_07
 // Rename.
+//
+// v0.2.1 - 2021_12_08
+// Add name prefix.
 
 /*
 Normalize items
