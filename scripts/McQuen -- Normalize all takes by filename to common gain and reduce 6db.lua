@@ -1,5 +1,5 @@
 --[[
-// McQuen: Normalize all takes by filename to common gain and reduce 6db
+// McQuen -- Normalize all takes by filename to common gain and reduce 6db
 // By Ryan McQuen (but really by @EricTBoneJackson)
 //
 // I find it useful for mixing to have a baseline
@@ -25,6 +25,10 @@
 //
 // v0.3.1 - 2012_12_08
 // Add name prefix.
+//
+// v0.3.2 - 2021_12_08
+// Use more compatible characters in name.
+//
 ]]--
 
 local selectedMediaItems = {}
